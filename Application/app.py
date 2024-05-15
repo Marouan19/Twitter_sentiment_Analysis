@@ -13,7 +13,7 @@ socketio = SocketIO(app)
 bootstrap_servers = ['localhost:9092']
 
 # Kafka topic to produce messages to
-topic_name = 'twitter'
+topic_name = 'Twitter'
 
 # Create Kafka producer
 producer = KafkaProducer(bootstrap_servers=bootstrap_servers,
