@@ -5,6 +5,8 @@ from json import dumps
 import pandas as pd
 from time import sleep
 import os
+from pymongo import MongoClient
+
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -14,6 +16,14 @@ bootstrap_servers = ['localhost:9092']
 
 # Kafka topic to produce messages to
 topic_name = 'Twitter'
+
+# MongoDB connection
+mongo_client = MongoClient('mongodb://localhost:27017/')
+db = mongo_client['Twitter_data']
+collection = db['Test']
+
+# Initialize data variable at module level
+data = None
 
 # Create Kafka producer
 producer = KafkaProducer(bootstrap_servers=bootstrap_servers,
@@ -27,7 +37,12 @@ def ensure_uploads_dir():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Check if data is not None and not empty
+    if data is not None and not data.empty:
+        return render_template('index.html', data=data.to_dict(orient='records'))
+    else:
+        return render_template('index.html', data=None)
+
 
 @app.route('/', methods=['POST'])
 def upload_csv():
@@ -39,12 +54,22 @@ def upload_csv():
         if csv_file:
             # Read the content of the uploaded CSV file
             df = pd.read_csv(csv_file)
-            # Send each row of the CSV file to Kafka producer
-            for _, row in df.iterrows():
-                send_to_kafka(row.to_dict())
-                sleep(1)  # Introduce a delay between producing messages
-            return "CSV file uploaded successfully and sent to Kafka producer."
+            # Save the data to a global variable
+            global data
+            data = df
+            # Redirect to the tables route to display the data
+            return render_template('index.html', data=data.to_dict(orient='records'))
     return redirect(request.url)
+
+
+
+@app.route('/tables')
+def show_tables():
+    # Check if data is not None and not empty
+    if data is not None and not data.empty:
+        return render_template('tables.html', data=data.to_dict(orient='records'))
+    else:
+        return render_template('tables.html', data=None)
 
 def send_to_kafka(data):
     if isinstance(data, pd.Series):

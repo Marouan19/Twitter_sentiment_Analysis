@@ -10,9 +10,19 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../static/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <style>
+        .navbar-brand img {
+            width: 50px; /* Set the width of the logo */
+            height: auto; /* Automatically adjust the height */
+            margin-right: 10px; /* Adjust spacing */
+        }
+    </style>
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+        <img src="../static/images/logo.png" alt="Logo">
+    </a>
     <a class="navbar-brand ps-3">Sentiment Analysis</a>
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"><i class="fas fa-bars"></i></button>
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
@@ -84,7 +94,7 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Charts
                     </a>
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="tables">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                         Dataset Uploaded
                     </a>
@@ -117,9 +127,6 @@
                             </div>
                             <div class="file-upload-content">
                                 <img class="file-upload-image" src="#" alt="File preview" />
-                                <div class="image-title-wrap">
-                                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded File</span></button>
-                                </div>
                             </div>
                             <!-- Add the submit button -->
                             <button type="submit" class="file-upload-btn">Submit</button>
@@ -155,23 +162,30 @@
                         <i class="fas fa-table me-1"></i>
                         DataTable
                     </div>
-                    <div class="card-body">
-                        <table id="datatablesSimple">
-                            <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>branch</th>
-                                <th>tweet</th>
-                                <th>sentiment</th>
-                            </tr>
-                            </thead>
-                            <tfoot>
-                            </tfoot>
-                            <tbody id="tweetTableBody">
-                            <!-- Table body content -->
-                            </tbody>
-                        </table>
-                    </div>
+                     <div class="card-body">
+                         <table id="datatablesSimple" class="table table-bordered">
+                             <thead>
+                             <tr>
+                                 <th>tweet_id</th>
+                                 <th>topic</th>
+                                 <th>sentiment</th>
+                                 <th>tweet</th>
+                             </tr>
+                             </thead>
+                             <tbody>
+                             <!-- Loop through and display data -->
+                             {% if data %}
+                             {% for row in data %}
+                             <tr>
+                                 <td>{{ row.tweet_id }}</td>
+                                 <td>{{ row.topic }}</td>
+                                 <td>{{ row.sentiment }}</td>
+                                 <td>{{ row.tweet }}</td>
+                             </tr>
+                             {% endfor %}
+                             {% endif %}
+                             </tbody>
+                         </table>
                 </div>
             </div>
         </main>
@@ -197,15 +211,6 @@
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="../static/js/datatables-simple-demo.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js" integrity="sha512-bMRDqGn/YN89cSCdiYMg6uL6J4zXnAeHoh+hPbsTXfKXp98kLwSiK7+GkE7CjC0ZifMvhPmgO6zPAX3a32Qagw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    const socket = io();
 
-    socket.on('tweet_data', function(data) {
-        // Update the table with the received data
-        const tableBody = document.getElementById('tweetTableBody');
-        const newRow = tableBody.insertRow();
-        newRow.innerHTML = `<td>${data.id}</td><td>${data.branch}</td><td>${data.tweet}</td><td>${data.sentiment}</td>`;
-    });
-</script>
 </body>
 </html>
