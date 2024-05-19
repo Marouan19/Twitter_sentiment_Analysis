@@ -1,5 +1,7 @@
 # Twitter Sentiment Analysis
 
+![Visualization](images/architicture.webp)
+
 ## Application Structure
 ```bash
 Twitter_sentiment/
@@ -68,12 +70,19 @@ python app.py
 ## Steps to predicte your data
 1. Upload your data:
    
-![Visualization](images/architicture.png)
+![Visualization](images/import.png)
 
-2. go to chart and see the visualization
+2. After upload data u should see your data
 
-![Visualization](images/vizualisation.png)
+![Visualization](images/data_import.png)
 
+3. Go to predict in real time to see your data generated in real time
+
+![Visualization](images/prediction.png)
+
+4. Go to chart to see statistics
+
+![Visualization](images/visualisation.png)
 ## Team
 - Marouan Daghmoumi
 - Mohammed Aachabi
