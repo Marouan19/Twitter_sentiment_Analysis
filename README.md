@@ -1,6 +1,6 @@
 # Twitter Sentiment Analysis
 
-![Visualization](images/architicture.webp)
+![Visualization](images/architicture.png)
 
 ## Application Structure
 ```bash
