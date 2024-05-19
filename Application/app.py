@@ -89,13 +89,21 @@ def convert_objectid_to_str(data):
 
 @app.route('/charts')
 def charts():
-    load_data_from_mongodb()
     if data_mongodb is not None and not data_mongodb.empty:
         data_mongodb_records = data_mongodb.to_dict(orient='records')
         data_mongodb_records = convert_objectid_to_str(data_mongodb_records)
-        return render_template('charts.html', data_mongodb=data_mongodb_records)
+
+        counts = {
+            'count_0': data_mongodb['predicted_sentiment'].value_counts().get(0, 0),
+            'count_1': data_mongodb['predicted_sentiment'].value_counts().get(1, 0),
+            'count_2': data_mongodb['predicted_sentiment'].value_counts().get(2, 0),
+            'count_3': data_mongodb['predicted_sentiment'].value_counts().get(3, 0),
+        }
+
+        return render_template('charts.html', data_mongodb=data_mongodb_records, counts=counts)
     else:
-        return render_template('charts.html', data_mongodb=None)
+        return render_template('charts.html', data_mongodb=None, counts=None)
+
 
 @app.route('/text')
 def text():
@@ -103,14 +111,10 @@ def text():
 
 @app.route('/layout-static')
 def layout_static():
-    load_data_from_mongodb()
-    # Check if data_mongodb is not None and not empty
     if data_mongodb is not None and not data_mongodb.empty:
         return render_template('layout-static.html', data_mongodb=data_mongodb.to_dict(orient='records'))
     else:
         return render_template('layout-static.html', data_mongodb=None)
-
-
 
 def send_to_kafka(data):
     if isinstance(data, pd.Series):
@@ -136,11 +140,30 @@ def background_thread():
         current_hash = hashlib.md5(pd.util.hash_pandas_object(data_mongodb).values).hexdigest()
         if current_hash != last_hash:
             last_hash = current_hash
-            socketio.emit('update_data', {'data_mongodb': data_mongodb.to_dict(orient='records')}, namespace='/charts')
-        sleep(10)  # Adjust sleep interval based on your needs
+
+            counts = {
+                'count_0': data_mongodb['predicted_sentiment'].value_counts().get(0, 0),
+                'count_1': data_mongodb['predicted_sentiment'].value_counts().get(1, 0),
+                'count_2': data_mongodb['predicted_sentiment'].value_counts().get(2, 0),
+                'count_3': data_mongodb['predicted_sentiment'].value_counts().get(3, 0),
+            }
+
+            socketio.emit('update_data', {
+                'data_mongodb': data_mongodb.to_dict(orient='records'),
+                'counts': counts
+            }, namespace='/charts')
+
+        sleep(3)  # Adjust sleep interval based on your needs
+
+# Start the background thread when the server starts
+def start_background_thread():
+    thread = threading.Thread(target=background_thread)
+    thread.daemon = True
+    thread.start()
+
+@app.before_first_request
+def initialize():
+    start_background_thread()
 
 if __name__ == "__main__":
-    # Start the background thread when the server starts
-    thread = threading.Thread(target=background_thread)
-    thread.start()
     socketio.run(app, debug=True)
