@@ -15,7 +15,7 @@ db = mongo_client['Twitter_data']
 collection = db['Test']
 
 # Create Kafka consumer
-consumer = KafkaConsumer('Twitter',
+consumer = KafkaConsumer('my_topic',
                          group_id='twitter_consumer_group',
                          bootstrap_servers=['localhost:9092'],
                          auto_offset_reset='earliest',
