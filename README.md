@@ -72,11 +72,11 @@ python app.py
    
 ![Visualization](images/import.png)
 
-2. After upload data u should see your data
+2. After uploading the data will be visualised as follow
 
 ![Visualization](images/data_import.png)
 
-3. Go to predict in real time to see your data generated in real time
+3. Go to 'Predict in Real Time' to see your data generated instantly.
 
 ![Visualization](images/prediction.png)
 
@@ -84,8 +84,8 @@ python app.py
 
 ![Visualization](images/visualisation.png)
 ## Team
-- Marouan Daghmoumi
-- Mohammed Aachabi
+- Marouan DAGHMOUMI
+- Mohammed AACHABI
 
 ## Supervised By
 - Prof. Yasyn El Yusufi
