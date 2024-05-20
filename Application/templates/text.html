@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="Steps to implement the Twitter Sentiment Analysis project" />
     <meta name="author" content="Your Name" />
-    <title>Twitter Sentiment Analysis Steps</title>
+    <title>Twitter Sentiment Analysis</title>
     <link rel="icon" type="image/png" href="static/images/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../static/css/styles.css" rel="stylesheet" />
@@ -50,8 +50,8 @@
             max-width: 100%;
             border-radius: 5px;
             margin: 10px 0;
-            width: 100%; /* Adjust as needed */
-            height: auto; /* Adjust as needed */
+            width: 100%;
+            height: auto;
         }
         pre code.language-bash, pre code.language-python {
             background: #2d2d2d;
@@ -75,6 +75,72 @@
         a:hover {
             text-decoration: underline;
         }
+        #head {
+    font-family: monospace;
+    color: #fff;
+    margin: auto;
+    padding: 35px;
+    font-size: 40px;
+    text-align: center;
+}
+#bar {
+    text-align: center;
+    width: 750px;
+    height: 25px;
+    background-color: #DAD9D9;
+    margin: 0 auto;
+    font-family: monospace;
+    padding: auto;
+    float: none;
+    border-radius: 5px;
+}
+#red {
+    background-color: #E94B35;
+    border-radius: 100%;
+    width: 15px;
+    height: 15px;
+    margin: 0 auto;
+    left: -47%;
+    bottom: -20%;
+    position:relative;
+}
+#yellow {
+    background-color: #f0f000;
+    border-radius: 100%;
+    width: 15px;
+    height: 15px;
+    margin: 0 auto;
+    left: -44%;
+    bottom: 40%;
+    position:relative;
+    display: block;
+}
+#green {
+    background-color: #1AAF5C;
+    border-radius: 100%;
+    width: 15px;
+    height: 15px;
+    margin: 0 auto;
+    left: -41%;
+    bottom: 99%;
+    position:relative;
+    display: block;
+}
+#screen {
+    background-color: #000000;
+    width: 750px;
+    height: 200px;
+    border-radius: 2%;
+    margin: 0 auto;
+    padding: 1px;
+}
+.font {
+    color: #fff;
+    font-family: monospace;
+    font-size: 15px;
+    text-align: left;
+    position: static;
+}
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -107,16 +173,14 @@
                         Real Time Prediction
                     </a>
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                        </nav>
+                        <nav class="sb-sidenav-menu-nested nav"></nav>
                     </div>
                     <a class="nav-link collapsed" href="/text">
                         <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                         Project and Tools
                     </a>
                     <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                        </nav>
+                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages"></nav>
                     </div>
                     <div class="sb-sidenav-menu-heading">Addons</div>
                     <a class="nav-link" href="/charts">
@@ -138,10 +202,9 @@
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">Twitter Sentiment Analysis</li>
                 </ol>
-
                 <div class="row">
                     <div class="header">
-                        Prédiction de sentiments en temps réel des flux de données de réseau social Twitter<br>
+                        Real-time sentiment prediction of Twitter social media data streams<br>
                     </div>
                     <div class="section">
                         <div class="section-title">Twitter Sentiment Analysis</div>
@@ -150,84 +213,136 @@
                         <div class="subsection-title">Project Architecture</div>
                         <img src="static/images/architicture.png" alt="Architecture Diagram" width="600" height="400">
                     </div>
-
                     <div class="section">
                         <div class="section-title">Project Structure</div>
-                        <pre><code class="language-bash">
-Application
-├── static
-├── templates
-├── uploads
-├── app.py
-├── consumer
-│   ├── lrmodel
-│   └── consume.py
-├── Model
-│   ├── LrModel
-│   ├── Pipline
-│   ├── model.ipynb
-│   ├── twitter_training.csv
-│   └── twitter_validation.csv
-                        </code>
+                        <div id="bar">
+    <div id="red">
+    </div>
+    <div id="yellow">
+    </div>
+    <div id="green">
+    </div>
+</div>
+    <div id="screen">
+        <p class="font">root@10.0.0.1:~$<br>Application<br>
+├── static<br>
+├── templates<br>
+├── uploads<br>
+├── app.py<br>
+├── consumer<br>
+│   ├── lrmodel<br>
+│   └── consume.py<br>
+├── Model<br>
+│   ├── LrModel<br>
+│   ├── Pipline<br>
+│   ├── model.ipynb<br>
+│   ├── twitter_training.csv<br>
+│   └── twitter_validation.csv</p>
+    </div>
                     </div>
-
                     <div class="section">
-                        <div class="section-title">Getting Started</div>
-                        <div class="subsection-title">Prerequisites</div>
+                        <div class="section-title">Project and Tools</div>
+                        <div class="subsection-title">Overview</div>
+                        <p>The Twitter Sentiment Analysis project involves several tools and technologies to achieve real-time sentiment analysis. Below is a detailed description of each tool and the steps involved in the project.</p>
+                        <div class="subsection-title">Tools Used</div>
                         <ul>
-                            <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
-                            <li><a href="https://www.python.org/" target="_blank">Python 3.9</a></li>
-                            <li><a href="https://git-scm.com/" target="_blank">Git</a></li>
+                            <li><strong>Kafka:</strong> A distributed streaming platform used to publish and subscribe to streams of records. In this project, Kafka is used to stream real-time Twitter data.</li>
+                            <li><strong>PySpark:</strong> The Python API for Apache Spark, used for large-scale data processing. It helps in processing the Twitter data in real-time.</li>
+                            <li><strong>Logistic Regression:</strong> A statistical model used for binary classification. Here, it is used to classify the sentiment of tweets as positive, negative, or neutral.</li>
+                            <li><strong>Spark Streaming:</strong> An extension of the core Spark API that allows data stream processing. It is used to process the incoming Twitter data in real-time.</li>
+                            <li><strong>Chart.js:</strong> A JavaScript library for creating interactive charts. It is used in the Streamlit app to visualize the sentiment analysis results.</li>
+                            <li><strong>MongoDB:</strong> A NoSQL database used to store the processed tweet sentiments. It allows for efficient retrieval and storage of large datasets.</li>
                         </ul>
                     </div>
-
                     <div class="section">
-                        <div class="section-title">Installation</div>
-                        <div class="subsection-title">Clone the Repository:</div>
-                        <pre><code class="language-bash">git@github.com:Marouan19/Twitter_sentiment.git
-                        </code></pre>
+                        <div class="section-title">Steps Involved</div>
+                        <div class="subsection-title">1. Clone the Repository</div>
+                        <div id="bar">
+                            <div id="red">
 
-                        <div class="subsection-title">Set Up Kafka and Zookeeper:</div>
-                        <p>Set Up Kafka and Zookeeper using Docker Compose:</p>
-                        <p><strong>Important:</strong> Make sure you have a docker-compose.yml file (e.g., zk-single-kafka-single.yml) that defines your Kafka and Zookeeper services.</p>
-                        <pre><code class="language-bash">docker-compose -f zk-single-kafka-single.yml up -d
-docker-compose -f zk-single-kafka-single.yml ps
-                        </code></pre>
+                            </div>
+                            <div id="yellow">
 
-                        <div class="subsection-title">Create the Kafka Topic:</div>
-                        <p>Access the kafka1 container:</p>
-                        <pre><code class="language-bash">docker exec -it kafka1 /bin/bash
-                        </code></pre>
-                        <p>Create the twitter topic:</p>
-                        <pre><code class="language-bash">kafka-topics --create --topic twitter --bootstrap-server localhost:9092
-                        </code></pre>
-                        <p>Verify the topic creation:</p>
-                        <pre><code class="language-bash">kafka-topics --describe --topic twitter --bootstrap-server localhost:9092
-                        </code></pre>
+                            </div>
+                            <div id="green">
 
-                        <div class="subsection-title">Prepare the Kafka Container with Producer.py and Data:</div>
-                        <p>You'll need to copy Producer.py and twitter_validation.csv into your kafka1 Docker container. The exact method for doing this might vary depending on your setup, but here are two common approaches:</p>
-                        <ul>
-                            <li>Using docker cp: Copy the files from your host machine to the container.</li>
-                            <li>Mounting Volumes: Mount a volume from your host machine that contains the files into the kafka1 container.</li>
-                        </ul>
+                            </div>
+                        </div>
+                        <div id="screen">
+                            <p class="font">root@10.0.0.1:~$ git clone git@github.com:Marouan19/Twitter_sentiment.git</p>
+                        </div>
 
-                        <div class="subsection-title">Start the Spark Consumer:</div>
-                        <p>Open a new terminal and navigate to the Consumer directory. Execute Consumer.py using Spark:</p>
-                        <pre><code class="language-bash">python3 Consumer.py
-                        </code></pre>
+                        <div class="subsection-title">2. Set Up Kafka and Zookeeper</div>
+                        <p>Download and set up Kafka and Zookeeper using Docker Compose. This setup is necessary for streaming the Twitter data.</p>
+                         <div id="bar">
+                            <div id="red">
 
-                        <div class="subsection-title">Run the Streamlit Web App:</div>
-                        <p>Open another terminal and navigate to the WebApp directory. Run the Streamlit app:</p>
-                        <pre><code class="language-bash">streamlit run app.py
-                        </code></pre>
+                            </div>
+                            <div id="yellow">
+
+                            </div>
+                            <div id="green">
+
+                            </div>
+                        </div>
+                        <div id="screen">
+                            <p class="font">docker-compose -f zk-single-kafka-single.yml up -d</p>
+                        </div>
+                        <div class="subsection-title">3. Create Kafka Topic</div>
+                        <p>Create a Kafka topic to which the Twitter data will be streamed.</p>
+                        <div id="bar">
+                            <div id="red">
+
+                            </div>
+                            <div id="yellow">
+
+                            </div>
+                            <div id="green">
+
+                            </div>
+                        </div>
+                        <div id="screen">
+                            <p class="font">root@10.0.0.1:~$ docker exec -it kafka1 /bin/bash kafka-topics --create --topic twitter --bootstrap-server localhost:9092</p>
+                        </div>
+                        <div class="subsection-title">4. Prepare Kafka Container</div>
+                        <p>Copy the Producer script and data file into the Kafka container. This script will produce the Twitter data to the Kafka topic.</p>
+                        <div class="subsection-title">5. Start Spark Consumer</div>
+                        <p>Start the Spark consumer script that subscribes to the Kafka topic, processes the tweets, and predicts their sentiment.</p>
+                        <div id="bar">
+                            <div id="red">
+
+                            </div>
+                            <div id="yellow">
+
+                            </div>
+                            <div id="green">
+
+                            </div>
+                        </div>
+                        <div id="screen">
+                            <p class="font">root@10.0.0.1:~$ python3 Consumer.py</p>
+                        </div>
+                        <div class="subsection-title">6. Run Streamlit Web App</div>
+                        <p>Run the Streamlit web application that visualizes the sentiment analysis results.</p>
+                         <div id="bar">
+                            <div id="red">
+
+                            </div>
+                            <div id="yellow">
+
+                            </div>
+                            <div id="green">
+
+                            </div>
+                        </div>
+                        <div id="screen">
+                            <p class="font">root@10.0.0.1:~$ python app.py</p>
+                        </div>
                     </div>
-
                     <div class="section">
                         <div class="section-title">Usage</div>
                         <p>The producer (running inside the kafka1 container) continuously streams Twitter data from the twitter_validation.csv file into a Kafka topic. The Spark consumer subscribes to the Kafka topic, analyzes tweet sentiment using a pre-trained Logistic Regression model, and stores the results in MongoDB. The Streamlit web app visualizes the sentiment analysis data retrieved from MongoDB.</p>
                     </div>
-
                 </div>
             </div>
         </main>
